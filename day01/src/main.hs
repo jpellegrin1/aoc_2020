@@ -1,17 +1,23 @@
 pair2020 :: [Int] -> Int
-sumTuple :: (Int, Int) -> Int
-multTuple :: (Int, Int) -> Int
+checkLists :: ([Int], [Int]) -> Int
+checkPair :: (Int, Int) -> Bool
 
-sumTuple (a, b) = a + b
-multTuple (a, b) = a * b
+checkPair (a,b) =  a+b == 2020
+
+checkLists (l, m)
+    | length m == 1 && not (checkPair (a, b)) = checkLists (x, tail x)
+    | checkPair (a, b) = a*b
+    | otherwise = checkLists (l, tail m)
+    where
+        a = head l
+        b = head m
+        x = tail l
 
 pair2020 l =
-    checkPair l []
-    where
-        checkPair m [] = pair2020 (tail l)
-        checkPair m (x:xs) =
-            if sumTuple (head l, x) == 2020
-                then multTuple (head l, x)
-                else checkPair l xs
+    checkPair (l, tail l)
 
-main = print $ pair2020 []
+main = do
+    f <- readFile "input.txt"
+    let c = lines f
+        s = map (read::String->Int) c
+    print $ pair2020 $ s
