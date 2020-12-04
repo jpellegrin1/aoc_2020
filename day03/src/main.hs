@@ -12,9 +12,12 @@ checkTree a = a == '#'
 
 countTree n m (a,b) r [] = n
 countTree n m (a,b) r (x:xs) =
-    if (checkTree $ (x !! (m `mod` (length x)))) && ((r+1) `mod` a) == 0
+    if (checkTree $ (x !! (m `mod` (length x)))) && (r `mod` a) == 0
         then countTree (n+1) (m+b) (a,b) (r+1) xs
-        else countTree n (m+b) (a,b) (r+1) xs
+        else (if r `mod` a == 0
+                then countTree n (m+b) (a,b) (r+1) xs
+                else countTree n m (a,b) (r+1) xs
+                )
 
 tobogganRide c (a,b) = countTree 0 0 (a,b) 0 c
 
